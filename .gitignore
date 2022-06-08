@@ -1,0 +1,13 @@
+#Python
+venv/
+__pycache__/
+.env
+
+#VS Code
+.vscode/
+
+#Files
+*.log/
+log/
+
+
