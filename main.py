@@ -13,6 +13,7 @@ from os import getenv
 from fireREST import FMC
 import requests
 from requests.structures import CaseInsensitiveDict
+from datetime import datetime
 
 def login():
     """
@@ -76,26 +77,34 @@ def usages(data, host, headers):
         host (_type_): _description_
         headers (_type_): _description_
     """
+    print(f' Busqueda de objetos sin uso en {host} '.center(100, '-'))
     n = 0
+    q = 0
     for i in data:
         for _ in i:
+            q += 1
             name = _['name']
             uuid= _['id']
             t = _['type']
             url = f"https://{host}/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/operational/usage?filter=uuid:{uuid};type:{t}"
             resp = requests.get(url, headers=headers, verify = False)
-            if resp.json()['paging']['count'] == 0:
-                n += 1
-                print(t + ' : ' +  name + ' ->  No se usa')
-    print(f" Cantidad de objetos sin uso: {n} ".center(100, '-'))
+            try:
+                if resp.json()['paging']['count'] == 0:
+                    n += 1
+                    print(t + ' : ' +  name + ' ->  No se usa')
+            except KeyError as e:
+                print(resp.status_code)
+                
+    print(f" Cantidad de objetos sin uso: {n} de {q} ".center(100, '-'))
 
 def main():
+    start = datetime.now()
     fmc = login()
     data = objectos(fmc[0])
     headers = header(fmc[0])
     usages(data, fmc[1], headers)
-    
+    total_time = datetime.now() - start
+    print(f" Tiempo de ejecucion: {total_time} ".center(100, '-'))
 
 if __name__ == '__main__':
     main()
-    
