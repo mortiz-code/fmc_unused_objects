@@ -4,8 +4,8 @@
 __author__ = "Matias Ortiz"
 __email__ = "matias.ortiz@bvstv.com"
 __webpage__ = "https://github.com/mortiz-code"
-__version__ = "0.1.0"
-__copyright__ = "Copyright (c) 2022, all rights reserved."
+__version__ = "0.2.0"
+__copyright__ = "Copyright (c) 2023, all rights reserved."
 __license__ = "BSD 3-Clause License."
 
 from dotenv import load_dotenv
@@ -15,96 +15,73 @@ import requests
 from requests.structures import CaseInsensitiveDict
 from datetime import datetime
 
-def login():
-    """
-    login Funcion de login
 
-    Returns:
-        _type_: Lista con el objeto de conexion y el hostmame.
-    """
-    
-    load_dotenv(dotenv_path='.env')
-    HOST = getenv('HOST')
-    USER = getenv('USR')
-    PWD = getenv('PASS')
-    host=HOST
-    user=USER
-    pwd=PWD
-    fmc = FMC(hostname=host, username=user, password=pwd, domain='Global')
-    return [fmc, host]
+load_dotenv(dotenv_path='.env')
+_HOST = getenv('HOST')
+_USER = getenv('USR')
+_PWD = getenv('PASS')
 
 def objectos(fmc):
-    """
-    objectos Objetos
-
-    Args:
-        fmc (_type_): _description_
-
-    Returns:
-        _type_: Listado de objetos a ser buscandos.
-    """
-    net_objects = fmc.object.network.get()
+    networkaddress_objects = fmc.object.networkaddress.get()
     host_objects = fmc.object.host.get()
-    port_objects = fmc.object.port.get()
-    url_objects = fmc.object.url.get()
+    network_objects = fmc.object.network.get()
+    range_objects = fmc.object.range.get()
+    fqdn_objects = fmc.object.fqdn.get()
     networkgroup_objects = fmc.object.networkgroup.get()
+    port_objects = fmc.object.port.get()
+    protocolportobject_objects = fmc.object.protocolportobject.get()
     portobjectgroup_objects = fmc.object.portobjectgroup.get()
+    icmpv4object_objects = fmc.object.icmpv4object.get()
+    icmpv6object_objects = fmc.object.icmpv6object.get()
+    anyprotocolportobject_objects = fmc.object.anyprotocolportobject.get()
+    url_objects = fmc.object.url.get()
     urlgroup_objects = fmc.object.urlgroup.get()
+    vlantag_objects = fmc.object.vlantag.get()
+    vlangrouptag = fmc.object.vlangrouptag.get()
 
-    return [net_objects, host_objects, port_objects, url_objects, networkgroup_objects, portobjectgroup_objects, urlgroup_objects]
+
+    return [networkaddress_objects,host_objects,network_objects,range_objects,fqdn_objects,networkgroup_objects,port_objects,protocolportobject_objects,portobjectgroup_objects,icmpv4object_objects,icmpv6object_objects,anyprotocolportobject_objects,url_objects,urlgroup_objects,vlantag_objects,vlangrouptag] 
 
 def header(fmc):
-    """
-    header _summary_
-
-    Args:
-        fmc (_type_): _description_
-
-    Returns:
-        _type_: Headers para requests.
-    """
     headers = CaseInsensitiveDict()
     headers["accept"] = "application/json"
     headers["X-auth-access-token"] = fmc.conn.headers['X-auth-access-token']
     return headers
 
-def usages(data, host, headers):
-    """
-    usages Busqueda de objetos sin uso. Se utiliza UUID y tipo de objeto en el busqueda. El primer loop es una lista y el segundo un diccionario.
-
-    Args:
-        data (_type_): _description_
-        host (_type_): _description_
-        headers (_type_): _description_
-    """
-    print(f' Busqueda de objetos sin uso en {host} '.center(100, '-'))
+def usages(data, fmc, headers):
+    domain = fmc.system.info.domain.get()
+    domain = domain[0]['uuid']
+    print(f' Searching for unused objects in {_HOST} '.center(100, '-'))
     n = 0
     q = 0
-    for i in data:
-        for _ in i:
-            q += 1
-            name = _['name']
-            uuid= _['id']
-            t = _['type']
-            url = f"https://{host}/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/operational/usage?filter=uuid:{uuid};type:{t}"
-            resp = requests.get(url, headers=headers, verify = False)
-            try:
-                if resp.json()['paging']['count'] == 0:
-                    n += 1
-                    print(t + ' : ' +  name + ' ->  No se usa')
-            except KeyError as e:
-                print(resp.status_code)
-                
-    print(f" Cantidad de objetos sin uso: {n} de {q} ".center(100, '-'))
+    try:
+        for i in data:
+            for _ in i:
+                q += 1
+                name = _['name']
+                uuid= _['id']
+                obj = _['type']
+                url = f"https://{_HOST}/api/fmc_config/v1/domain/{domain}/object/operational/usage?filter=uuid:{uuid};type:{obj}"
+                resp = requests.get(url, headers=headers, verify = False, timeout=10)
+                try:
+                    if resp.json()['paging']['count'] == 0:
+                        n += 1
+                        print(f'Type {obj} : {name} ->  Not used.')
+                except Exception:
+                    print(resp.status_code)
+    except KeyboardInterrupt:
+        exit()
+
+    print(f" Number of unused objects: {n} of {q} ".center(100, '-'))
 
 def main():
     start = datetime.now()
-    fmc = login()
-    data = objectos(fmc[0])
-    headers = header(fmc[0])
-    usages(data, fmc[1], headers)
+    fmc = FMC(hostname=_HOST, username=_USER, password=_PWD, domain='Global')
+    data = objectos(fmc)
+    headers = header(fmc)
+    usages(data, fmc, headers)
     total_time = datetime.now() - start
-    print(f" Tiempo de ejecucion: {total_time} ".center(100, '-'))
+    print(f" Execution time: {total_time} ".center(100, '-'))
 
 if __name__ == '__main__':
     main()

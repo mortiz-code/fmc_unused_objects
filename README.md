@@ -1,5 +1,13 @@
 # fmc_clean_objects
 ## Detects unused objects.
+### How to use:
+
+Completed .env_expample file and rename it to .env
+
+Enable REST API calls in FMC.
+- https://www.cisco.com/c/en/us/td/docs/security/firepower/730/api/REST/secure_firewall_management_center_rest_api_quick_start_guide_730/About_The_Firepower_Management_Center_REST_API.html#task_khz_fh1_ccb
+
+Example usage:
 
     (venv) ┌──(mat㉿kali)-[~/github/devnet/firepower/fmc_objects] (main)
     └─$ /home/mat/github/devnet/firepower/fmc_objects/venv/bin/python /home/mat/github/devnet/firepower/fmc_objects/main.py
