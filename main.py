@@ -11,10 +11,10 @@ __license__ = "BSD 3-Clause License."
 from dotenv import load_dotenv
 from os import getenv
 from fireREST import FMC
+from fireREST.exceptions import AuthError
 import requests
 from requests.structures import CaseInsensitiveDict
 from datetime import datetime
-
 
 load_dotenv(dotenv_path='.env')
 _HOST = getenv('HOST')
@@ -67,21 +67,23 @@ def usages(data, fmc, headers):
                     if resp.json()['paging']['count'] == 0:
                         n += 1
                         print(f'Type {obj} : {name} ->  Not used.')
-                except Exception:
+                except requests.exceptions.ReadTimeout:
                     print(resp.status_code)
     except KeyboardInterrupt:
         exit()
-
-    print(f" Number of unused objects: {n} of {q} ".center(100, '-'))
+    print(f" Number of unused objects {n} of {q} : {round(100 * (n / q)),2}%".center(100, '-'))
 
 def main():
     start = datetime.now()
-    fmc = FMC(hostname=_HOST, username=_USER, password=_PWD, domain='Global')
-    data = objectos(fmc)
-    headers = header(fmc)
-    usages(data, fmc, headers)
-    total_time = datetime.now() - start
-    print(f" Execution time: {total_time} ".center(100, '-'))
+    try:
+        fmc = FMC(hostname=_HOST, username=_USER, password=_PWD, domain='Global')
+        headers = header(fmc)
+        data = objectos(fmc)
+        usages(data, fmc, headers)
+        total_time = datetime.now() - start
+        print(f" Execution time: {total_time} ".center(100, '-'))
+    except AuthError:
+        print("\n",' Check your .env file '.center(80, '-'))
 
 if __name__ == '__main__':
     main()

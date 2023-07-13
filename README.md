@@ -28,8 +28,8 @@ Enable REST API calls.
 
 
 Example usage:
-
-    (venv) ┌──(mat㉿kali)-[~/github/devnet/fmc_clean_objects] (main)
+            
+    (venv) ┌──(mat㉿kali)-[~/github/devnet/fmc_clean_objects] (dev)
     └─$ /home/mat/github/devnet/fmc_clean_objects/venv/bin/python /home/mat/github/devnet/fmc_clean_objects/main.py
     ------------------------- Searching for unused objects in fmc01.bvs.local --------------------------
     Type Host : BE-ThousandEyes-Agent ->  Not used.
@@ -164,7 +164,8 @@ Example usage:
     Type ProtocolPortObject : YahooMessenger_Voice_Chat_UDP ->  Not used.
     Type PortObjectGroup : Camaras ->  Not used.
     ------------------------------- Number of unused objects: 131 of 429 -------------------------------
-    ---------------------------------- Execution time: 0:06:08.550838 ----------------------------------
+    ---------------------------------- Execution time: 0:05:39.649021 ----------------------------------
+
 
 ## DevNet Sandbox
 
