@@ -9,7 +9,7 @@ Detects unused objects in Secure Firewall Management Center to keep the configur
 Clone the repository:
 
 ```sh
-git clone https://github.com/mortiz-code/fmc_clean_objects.git
+git clone https://github.com/mortiz-code/fmc_unused_objects.git
 cd fmc_clean_objects
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
