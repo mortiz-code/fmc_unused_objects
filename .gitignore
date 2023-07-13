@@ -10,4 +10,6 @@ __pycache__/
 *.log/
 log/
 
-
+#GitHub
+.gitignore
+.github/
