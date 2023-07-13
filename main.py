@@ -70,7 +70,7 @@ def usages(data, fmc, headers):
                     print(resp.status_code)
     except KeyboardInterrupt:
         exit()
-    print(f" Number of unused objects {n} of {q} : {round(100 * (n / q)),2}%".center(100, '-'))
+    print(f" Number of unused objects {n} of {q} / {round(100 * n / q)}% ".center(100, '-'))
 
 def main():
     start = datetime.now()
