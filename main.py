@@ -49,8 +49,7 @@ def header(fmc):
     return headers
 
 def usages(data, fmc, headers):
-    domain = fmc.system.info.domain.get()
-    domain = domain[0]['uuid']
+    domain = fmc.system.info.domain.get()[0]['uuid']
     print(f' Searching for unused objects in {_HOST} '.center(100, '-'))
     n = 0
     q = 0
