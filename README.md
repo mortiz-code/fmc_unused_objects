@@ -19,8 +19,7 @@ pip install -r requirements.txt
 
 - Complete .env_expample file and rename it to .env
 
-Enable REST API calls.
-- https://www.cisco.com/c/en/us/td/docs/security/firepower/730/api/REST/secure_firewall_management_center_rest_api_quick_start_guide_730/About_The_Firepower_Management_Center_REST_API.html#task_khz_fh1_ccb
+- [Enable REST API calls.](https://www.cisco.com/c/en/us/td/docs/security/firepower/730/api/REST/secure_firewall_management_center_rest_api_quick_start_guide_730/About_The_Firepower_Management_Center_REST_API.html#task_khz_fh1_ccb)
 
 
 
@@ -166,7 +165,7 @@ Example usage:
 
 ## DevNet Sandbox
 
-The Sandbox which can implement this script is at: https://devnetsandbox.cisco.com/RM/Diagram/Index/1228cb22-b2ba-48d3-a70a-86a53f4eecc0?diagramType=Topology
+The Sandbox which can implement this script [link](https://devnetsandbox.cisco.com/RM/Diagram/Index/1228cb22-b2ba-48d3-a70a-86a53f4eecc0?diagramType=Topology)
 
 
 ## Getting help
