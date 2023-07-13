@@ -19,7 +19,7 @@ pip install -r requirements.txt
 
 - Complete .env_expample file with your data and rename it to .env
 
-- [Enable REST API calls.](https://www.cisco.com/c/en/us/td/docs/security/firepower/730/api/REST/secure_firewall_management_center_rest_api_quick_start_guide_730/About_The_Firepower_Management_Center_REST_API.html#task_khz_fh1_ccb)
+- [Enable REST API calls in Secure Firewall Management Center.](https://www.cisco.com/c/en/us/td/docs/security/firepower/730/api/REST/secure_firewall_management_center_rest_api_quick_start_guide_730/About_The_Firepower_Management_Center_REST_API.html#task_khz_fh1_ccb)
 
 
 
