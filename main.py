@@ -82,8 +82,8 @@ def main():
         usages(data, fmc, headers)
         total_time = datetime.now() - start
         print(f" Execution time: {total_time} ".center(100, '-'))
-    except AuthError:
-        print("\n",' Check your .env file '.center(80, '-'))
+    except (AuthError, requests.exceptions.ConnectionError):
+        print(' Check your .env file '.center(80, '-'))
 
 if __name__ == '__main__':
     main()
