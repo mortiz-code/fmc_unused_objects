@@ -66,8 +66,10 @@ def usages(data, fmc, headers):
                     if resp.json()['paging']['count'] == 0:
                         n += 1
                         print(f'Type {obj} : {name} ->  Not used.')
+                except KeyError:
+                    pass
                 except requests.exceptions.ReadTimeout:
-                    print(resp.status_code)
+                    print(f'HTTP Error: {resp.status_code}')
     except KeyboardInterrupt:
         exit()
     print(f" Number of unused objects {n} of {q} / {round(100 * n / q)}% ".center(100, '-'))
